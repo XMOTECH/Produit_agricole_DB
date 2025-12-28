@@ -10,7 +10,7 @@ async function getConnection() {
   return await oracledb.getConnection({
     user: "mamadou",             
     password: "pass2025",        
-    connectString: "localhost:1521/XEPDB1"
+    connectString: "localhost:1521/XEPDB1" 
   });
 }
 
