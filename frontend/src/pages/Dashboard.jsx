@@ -4,10 +4,12 @@ import {
     getEvolutionData,
     getRendementData,
     getRepartitionProduit,
-    getTopVarietes
+    getTopVarietes,
+    getActivityData
 } from '../services/api';
 
 import StatCard from '../components/kpi/StatCard';
+import ActivityChart from '../components/charts/ActivityChart';
 import EvolutionChart from '../components/charts/EvolutionChart';
 import RevenuePieChart from '../components/charts/RevenuePieChart';
 import TopVarietiesChart from '../components/charts/TopVarietiesChart';
@@ -16,6 +18,7 @@ import InventoryTable from '../components/tables/InventoryTable';
 const Dashboard = () => {
     // États pour les données
     const [globalStats, setGlobalStats] = useState(null);
+    const [activityData, setActivityData] = useState([]);
     const [evolutionData, setEvolutionData] = useState([]);
     const [repartitionData, setRepartitionData] = useState([]);
     const [topVarietesData, setTopVarietesData] = useState([]);
@@ -30,8 +33,9 @@ const Dashboard = () => {
     const loadDashboardData = async () => {
         try {
             // Chargement parallèle pour optimiser la performance
-            const [statsRes, evoRes, pieRes, barRes, tableRes] = await Promise.all([
+            const [statsRes, actRes, evoRes, pieRes, barRes, tableRes] = await Promise.all([
                 getGlobalStats(),
+                getActivityData(),
                 getEvolutionData(),
                 getRepartitionProduit(),
                 getTopVarietes(),
@@ -39,6 +43,7 @@ const Dashboard = () => {
             ]);
 
             setGlobalStats(statsRes.data);
+            setActivityData(actRes.data);
             setEvolutionData(evoRes.data);
             setRepartitionData(pieRes.data);
             setTopVarietesData(barRes.data);
@@ -81,7 +86,12 @@ const Dashboard = () => {
 
             {/* 2. GRILLE DES GRAPHIQUES AVANCÉS */}
             <div style={styles.chartsGrid}>
-                {/* Graphique principal (Courbe) : Prend toute la largeur */}
+                {/* Graphique d'Activité (Combined) */}
+                <div style={styles.mainChart}>
+                    <ActivityChart data={activityData} />
+                </div>
+
+                {/* Graphique d'Évolution des Ventes (Area Chart) - RESTORED */}
                 <div style={styles.mainChart}>
                     <EvolutionChart data={evolutionData} />
                 </div>

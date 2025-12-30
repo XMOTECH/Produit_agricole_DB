@@ -154,6 +154,17 @@ app.get('/api/dashboard/repartition-produit', async (req, res) => {
 
 // 2. Endpoint for the Top 5 Varieties (Bar Chart)
 // We limit to 5 rows to keep the chart clean
+
+// Endpoint pour le graphique combiné (Activite)
+app.get('/api/dashboard/activite', async (req, res) => {
+  try {
+    const result = await executeSQL(`SELECT * FROM V_ACTIVITE_JOUR`);
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.get('/api/dashboard/top-varietes', async (req, res) => {
   const sql = `SELECT * FROM KPI_REVENUS ORDER BY total_ca DESC FETCH FIRST 5 ROWS ONLY`;
   const result = await executeSQL(sql, [], res);
