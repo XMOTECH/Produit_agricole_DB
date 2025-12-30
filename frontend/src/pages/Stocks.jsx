@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Package, Plus, AlertTriangle, Save, FolderPlus, Tag } from 'lucide-react';
+import { AlertTriangle, Save, FolderPlus, Tag } from 'lucide-react';
 import { getVarietes, getProduits, addProduit, addVariete, addPerte } from '../services/api';
 
 const Stocks = () => {

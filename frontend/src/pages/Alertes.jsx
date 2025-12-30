@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { AlertTriangle, Printer, ArrowRight, ShieldAlert, CheckCircle } from 'lucide-react';
+import { Printer, ArrowRight, ShieldAlert, CheckCircle } from 'lucide-react';
 import { getAlertesStock } from '../services/api';
 import { useNavigate } from 'react-router-dom';
 
