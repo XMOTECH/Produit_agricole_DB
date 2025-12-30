@@ -118,7 +118,17 @@ const VIEW_QUERIES = [
               SELECT 
                 (SELECT NVL(SUM(qte_kg),0) FROM RECOLTE) as total_recolte,
                 (SELECT NVL(SUM(qte_kg * prix_unitaire),0) FROM VENTE) as total_vente_fcfa,
-                (SELECT NVL(SUM(qte_kg),0) FROM PERTE) as total_perte_kg
+                (SELECT NVL(SUM(qte_kg),0) FROM PERTE) as total_perte_kg,
+                -- KPI: Taux d'écoulement = (Total Vendu / Total Récolté) * 100
+                ROUND(
+                    CASE WHEN (SELECT NVL(SUM(qte_kg),0) FROM RECOLTE) > 0 
+                    THEN ((SELECT NVL(SUM(qte_kg),0) FROM VENTE) / (SELECT NVL(SUM(qte_kg),0) FROM RECOLTE)) * 100 
+                    ELSE 0 END, 
+                2) as taux_ecoulement,
+                -- KPI: Valeur Stock Estimée = Somme (Stock Variété * Prix Moyen Variété)
+                (SELECT NVL(SUM(v.stock_actuel_kg * (
+                    SELECT NVL(AVG(s.prix_unitaire), 0) FROM VENTE s WHERE s.id_variete = v.id_variete
+                )), 0) FROM VARIETE v) as valeur_stock_estimee
               FROM DUAL`
     },
     // Vue pour le graphique d'évolution des ventes (Par jour)

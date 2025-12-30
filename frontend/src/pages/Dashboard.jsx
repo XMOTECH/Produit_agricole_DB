@@ -72,8 +72,10 @@ const Dashboard = () => {
             {globalStats && (
                 <div style={styles.kpiGrid}>
                     <StatCard title="Récolte Totale (Kg)" value={globalStats.TOTAL_RECOLTE} type="stock" />
-                    <StatCard title="Revenus Totaux (FCFA)" value={globalStats.TOTAL_VENTE_FCFA.toLocaleString()} type="money" />
+                    <StatCard title="Revenus Totaux (FCFA)" value={globalStats.TOTAL_VENTE_FCFA?.toLocaleString()} type="money" />
                     <StatCard title="Pertes Totales (Kg)" value={globalStats.TOTAL_PERTE_KG} type="alert" />
+                    <StatCard title="Taux d'Écoulement" value={(globalStats.TAUX_ECOULEMENT || 0) + '%'} type="percent" />
+                    <StatCard title="Valeur Stock (Est.)" value={(globalStats.VALEUR_STOCK_ESTIMEE || 0).toLocaleString() + ' F'} type="money" />
                 </div>
             )}
 
