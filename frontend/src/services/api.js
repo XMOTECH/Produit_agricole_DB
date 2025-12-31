@@ -12,6 +12,8 @@ export const getGlobalStats = () => api.get('/dashboard/stats-globales');
 export const getEvolutionData = () => api.get('/dashboard/evolution');
 export const getActivityData = () => api.get('/dashboard/activite');
 export const getAlertesStock = () => api.get('/dashboard/alertes');
+export const getPredictions = () => api.get('/dashboard/predictions');
+export const getTrends = () => api.get('/dashboard/trends');
 // Cette fonction accepte un terme de recherche
 export const getRendementData = (searchTerm = '') => api.get(`/dashboard/rendement?search=${searchTerm}`);
 

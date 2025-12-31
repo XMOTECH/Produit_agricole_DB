@@ -122,15 +122,19 @@ const PLSQL_QUERIES = [
         sql: `CREATE OR REPLACE PROCEDURE INIT_TEST_DATA AS
                   prod_id NUMBER;
                   var_id NUMBER;
+                  cnt NUMBER;
               BEGIN
-                  -- On ne crée les données que si la table est vide
-                  INSERT INTO PRODUIT (nom_produit) VALUES ('Chou') RETURNING id_produit INTO prod_id;
-                  INSERT INTO VARIETE (nom_variete, description, id_produit) VALUES ('Chou rouge', 'Variété test', prod_id) RETURNING id_variete INTO var_id;
-                  INSERT INTO RECOLTE (qte_kg, id_variete) VALUES (100, var_id);
-                  COMMIT;
+                  -- On ne crée les données que si le produit 'Chou' n'existe pas
+                  SELECT COUNT(*) INTO cnt FROM PRODUIT WHERE nom_produit = 'Chou';
+                  IF cnt = 0 THEN
+                      INSERT INTO PRODUIT (nom_produit) VALUES ('Chou') RETURNING id_produit INTO prod_id;
+                      INSERT INTO VARIETE (nom_variete, description, id_produit) VALUES ('Chou rouge', 'Variété test', prod_id) RETURNING id_variete INTO var_id;
+                      INSERT INTO RECOLTE (qte_kg, id_variete) VALUES (100, var_id);
+                      COMMIT;
+                  END IF;
               END;`
-    },
-    { name: "EXECUTION DONNEES TEST", sql: `BEGIN INIT_TEST_DATA; END;` }
+    }
+    // { name: "EXECUTION DONNEES TEST", sql: `BEGIN INIT_TEST_DATA; END;` } -- DÉSACTIVÉ POUR UPDATE SÉCURISÉ
 ];
 
 module.exports = PLSQL_QUERIES;

@@ -190,6 +190,26 @@ app.get('/api/dashboard/alertes', async (req, res) => {
   if (result) res.json(result.rows);
 });
 
+// Endpoint Machine Learning : Prédictions de Rupture
+app.get('/api/dashboard/predictions', async (req, res) => {
+  try {
+    const result = await executeSQL(`SELECT * FROM V_ML_STOCK_PREDICT WHERE niveau_urgence != 'NORMAL' ORDER BY jours_restants ASC`);
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Endpoint Machine Learning : Tendances
+app.get('/api/dashboard/trends', async (req, res) => {
+  try {
+    const result = await executeSQL(`SELECT * FROM V_ML_TRENDS ORDER BY reliability DESC`);
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 /// Tableau de Bord Détaillé (Rendement) avec RECHERCHE
 app.get('/api/dashboard/rendement', async (req, res) => {
   const { search } = req.query; // Récupère ?search=tomate
