@@ -82,7 +82,7 @@ const Alertes = () => {
                 <div>
                     <h2 style={{ margin: 0, color: '#1e293b' }}>Centre de Vigilance</h2>
                     <p style={{ margin: '5px 0 0 0', color: '#64748b' }}>
-                        Surveillance temps réel & Prédictions AI
+                        Surveillance temps réel & Prédictions
                     </p>
                 </div>
                 <button style={styles.printBtn} onClick={handlePrint}>
@@ -99,7 +99,7 @@ const Alertes = () => {
                             <div key={`pred-${idx}`} style={{ ...styles.card({ border: '#7c3aed' }), borderLeft: '5px solid #7c3aed' }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                     <span style={{ backgroundColor: '#f5f3ff', color: '#7c3aed', padding: '4px 10px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 'bold' }}>
-                                        IA : {pred.NIVEAU_URGENCE}
+                                        : {pred.NIVEAU_URGENCE}
                                     </span>
                                 </div>
                                 <h3 style={styles.prodName}>{pred.NOM_VARIETE}</h3>
