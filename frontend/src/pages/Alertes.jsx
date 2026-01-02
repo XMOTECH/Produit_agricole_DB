@@ -118,7 +118,7 @@ const Alertes = () => {
                     {alertes.map((item) => {
                         const params = getSeverityParams(item.STOCK_ACTUEL_KG);
                         return (
-                            <div key={item.ID_VARIETE} style={styles.card(params)}>
+                            <div key={`alert-${item.ID_VARIETE}`} style={styles.card(params)}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
                                     <span style={styles.badge(params)}>{params.text}</span>
                                     <ShieldAlert size={20} color={params.border} />

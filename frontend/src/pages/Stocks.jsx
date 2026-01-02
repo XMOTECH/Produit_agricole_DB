@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { AlertTriangle, Save, FolderPlus, Tag } from 'lucide-react';
 import { getVarietes, getProduits, addProduit, addVariete, addPerte } from '../services/api';
+import CsvImporter from '../components/forms/CsvImporter';
 
 const Stocks = () => {
     const [activeTab, setActiveTab] = useState('catalogue'); // 'catalogue' ou 'perte'
@@ -112,16 +113,21 @@ const Stocks = () => {
 
             {activeTab === 'catalogue' ? (
                 <div style={styles.container}>
-                    {/* COLONNE GAUCHE : Créer Produit */}
-                    <div style={styles.card}>
-                        <div style={styles.header}><FolderPlus size={20} color="#2563eb" /> Nouveau Produit</div>
-                        <form onSubmit={handleCreateProduit}>
-                            <div style={styles.inputGroup}>
-                                <label style={styles.label}>Nom de la catégorie (ex: Légumes)</label>
-                                <input type="text" style={styles.input} value={newProduit} onChange={e => setNewProduit(e.target.value)} required placeholder="Ex: Tubercule" />
-                            </div>
-                            <button type="submit" style={styles.button('#2563eb')}>Créer Catégorie</button>
-                        </form>
+                    {/* COLONNE GAUCHE : Créer Produit & Import CSV */}
+                    <div>
+                        <div style={styles.card}>
+                            <div style={styles.header}><FolderPlus size={20} color="#2563eb" /> Nouveau Produit</div>
+                            <form onSubmit={handleCreateProduit}>
+                                <div style={styles.inputGroup}>
+                                    <label style={styles.label}>Nom de la catégorie (ex: Légumes)</label>
+                                    <input type="text" style={styles.input} value={newProduit} onChange={e => setNewProduit(e.target.value)} required placeholder="Ex: Tubercule" />
+                                </div>
+                                <button type="submit" style={styles.button('#2563eb')}>Créer Catégorie</button>
+                            </form>
+                        </div>
+
+                        {/* IMPORT CSV */}
+                        <CsvImporter onImportSuccess={refreshData} />
                     </div>
 
                     {/* COLONNE DROITE : Créer Variété */}

@@ -8,17 +8,28 @@ const api = axios.create({
 });
 
 // Fonctions d'appel API
-export const getGlobalStats = () => api.get('/dashboard/stats-globales');
-export const getEvolutionData = () => api.get('/dashboard/evolution');
-export const getActivityData = () => api.get('/dashboard/activite');
+// Fonctions d'appel API avec filtres optionnels
+export const getGlobalStats = (period = '') => api.get(`/dashboard/stats-globales?period=${period}`);
+export const getEvolutionData = (period = '') => api.get(`/dashboard/evolution?period=${period}`);
+export const getActivityData = (period = '') => api.get(`/dashboard/activite?period=${period}`);
 export const getAlertesStock = () => api.get('/dashboard/alertes');
 export const getPredictions = () => api.get('/dashboard/predictions');
 export const getTrends = () => api.get('/dashboard/trends');
-// Cette fonction accepte un terme de recherche
-export const getRendementData = (searchTerm = '') => api.get(`/dashboard/rendement?search=${searchTerm}`);
+// Cette fonction accepte un terme de recherche et une période
+export const getRendementData = (searchTerm = '', period = '') =>
+    api.get(`/dashboard/rendement?search=${searchTerm}&period=${period}`);
 
-export const getRepartitionProduit = () => api.get('/dashboard/repartition-produit');
-export const getTopVarietes = () => api.get('/dashboard/top-varietes');
+export const getRepartitionProduit = (period = '') => api.get(`/dashboard/repartition-produit?period=${period}`);
+export const getTopVarietes = (period = '') => api.get(`/dashboard/top-varietes?period=${period}`);
+
+// --- IMPORT ---
+export const importVarietes = (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    return api.post('/import/varietes', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    });
+};
 
 // --- REFERENTIELS ---
 export const getVarietes = () => api.get('/varietes');

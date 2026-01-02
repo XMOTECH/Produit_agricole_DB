@@ -15,9 +15,9 @@ const VIEW_QUERIES = [
     {
         name: "View ALERTE_STOCK",
         sql: `CREATE OR REPLACE VIEW ALERTE_STOCK AS
-              SELECT nom_variete, stock_actuel_kg 
+              SELECT id_variete, nom_variete, stock_actuel_kg 
               FROM VARIETE 
-              WHERE stock_actuel_kg < 10`
+              WHERE stock_actuel_kg < 15`
     },
     // KPI 3 : Rendement Détaillé (Le plus important pour l'analyse)
     {
