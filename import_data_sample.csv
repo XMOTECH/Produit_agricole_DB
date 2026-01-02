@@ -1,15 +1,15 @@
-NOM_PRODUIT,NOM_VARIETE,DESCRIPTION,STOCK_INITIAL_KG
-Choux,Chou vert,Le plus répandu souvent utilisé dans les salades,50
-Choux,Chou rouge,Se distingue par sa couleur vive et est riche en antioxydants,30
-Choux,Chou-fleur,Connu pour ses bouquets blancs très populaire,45
-Choux,Brocoli,Riche en vitamines inflorescences non épanouies,20
-Choux,Chou de Bruxelles,Bourgeons souvent rôtis ou cuits,15
-Choux,Chou romanesco,Spirale avec une texture croquante,10
-Choux,Chou chinois (pak-choï),Feuilles tendres cuisine asiatique,25
-Oignon,Oignon Jaune,Variété classique pour cuisson,100
-Oignon,Oignon Rouge,Idéal pour les salades crues,80
-Carotte,Carotte Nantaise,Racine sucrée et cylindrique,120
-Carotte,Carotte de Colmar,Grosse racine de conservation,90
-Aubergine,Aubergine Violette,Classique longue et brillante,60
-Piment,Piment Bec d'Oiseau,Très piquant petit format,10
-Piment,Piment Doux,Saveur fruitée peu de piquant,15
+NOM_PRODUIT,NOM_VARIETE,DESCRIPTION,STOCK_INITIAL_KG,DATE_RECOLTE,QTE_RECOLTE
+Choux,Chou vert,Le plus répandu souvent utilisé dans les salades,50,2025-11-15,100
+Choux,Chou rouge,Se distingue par sa couleur vive,30,2025-12-10,40
+Choux,Chou-fleur,Connu pour ses bouquets blancs,45,2025-12-28,50
+Oignon,Oignon Jaune,Variété classique pour cuisson,100,2025-11-05,200
+Oignon,Oignon Rouge,Idéal pour les salades crues,80,2025-12-20,60
+Carotte,Carotte Nantaise,Racine sucrée et cylindrique,120,2025-11-20,150
+Carotte,Carotte de Colmar,Grosse racine de conservation,90,2025-12-05,110
+Aubergine,Aubergine Violette,Classique longue et brillante,60,2025-12-15,70
+Piment,Piment Bec d'Oiseau,Très piquant petit format,10,2025-12-30,12
+Piment,Piment Doux,Saveur fruitée peu de piquant,15,2026-01-01,20
+# Lignes de test pour le filtrage temporel
+Choux,Chou vert,Récolte supplémentaire nov,0,2025-11-30,50
+Oignon,Oignon Jaune,Récolte supplémentaire dec,0,2025-12-15,30
+Carotte,Carotte Nantaise,Récolte récente jan,0,2026-01-02,15

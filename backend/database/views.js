@@ -58,11 +58,12 @@ const VIEW_QUERIES = [
         name: "View EVOLUTION_VENTES",
         sql: `CREATE OR REPLACE VIEW EVOLUTION_VENTES AS
               SELECT 
+                  TRUNC(date_vente) as d_jour,
                   TO_CHAR(date_vente, 'YYYY-MM-DD') as jour,
                   SUM(qte_kg * prix_unitaire) as total_ca
               FROM VENTE
-              GROUP BY TO_CHAR(date_vente, 'YYYY-MM-DD')
-              ORDER BY jour ASC`
+              GROUP BY TRUNC(date_vente), TO_CHAR(date_vente, 'YYYY-MM-DD')
+              ORDER BY d_jour ASC`
     },
     {
         name: "View REPARTITION_CA_PRODUIT",
@@ -77,20 +78,20 @@ const VIEW_QUERIES = [
     {
         name: "View V_ACTIVITE_JOUR",
         sql: `CREATE OR REPLACE VIEW V_ACTIVITE_JOUR AS
-              SELECT jour, 
+              SELECT d_jour, jour, 
                      SUM(qte_recolte) as qte_recolte, 
                      SUM(qte_vente) as qte_vente, 
                      SUM(revenu) as revenu, 
                      SUM(qte_perte) as qte_perte
               FROM (
-                  SELECT TO_CHAR(date_rec, 'YYYY-MM-DD') as jour, qte_kg as qte_recolte, 0 as qte_vente, 0 as revenu, 0 as qte_perte FROM RECOLTE
+                  SELECT TRUNC(date_rec) as d_jour, TO_CHAR(date_rec, 'YYYY-MM-DD') as jour, qte_kg as qte_recolte, 0 as qte_vente, 0 as revenu, 0 as qte_perte FROM RECOLTE
                   UNION ALL
-                  SELECT TO_CHAR(date_vente, 'YYYY-MM-DD') as jour, 0 as qte_recolte, qte_kg as qte_vente, qte_kg * prix_unitaire as revenu, 0 as qte_perte FROM VENTE
+                  SELECT TRUNC(date_vente) as d_jour, TO_CHAR(date_vente, 'YYYY-MM-DD') as jour, 0 as qte_recolte, qte_kg as qte_vente, qte_kg * prix_unitaire as revenu, 0 as qte_perte FROM VENTE
                   UNION ALL
-                  SELECT TO_CHAR(date_perte, 'YYYY-MM-DD') as jour, 0 as qte_recolte, 0 as qte_vente, 0 as revenu, qte_kg as qte_perte FROM PERTE
+                  SELECT TRUNC(date_perte) as d_jour, TO_CHAR(date_perte, 'YYYY-MM-DD') as jour, 0 as qte_recolte, 0 as qte_vente, 0 as revenu, qte_kg as qte_perte FROM PERTE
               )
-              GROUP BY jour
-              ORDER BY jour ASC`
+              GROUP BY d_jour, jour
+              ORDER BY d_jour ASC`
     },
 ];
 

@@ -1,0 +1,95 @@
+# Rapport de Synthèse & Préparation de Soutenance
+
+Ce document constitue le bilan final de votre projet **Agri-Ges** par rapport aux objectifs de l'étude de cas. Il servira de base solide pour votre présentation devant votre professeur.
+
+---
+
+## 1. Analyse Technique du Projet
+
+### Niveau Conceptuel (MCD)
+Le modèle est centré sur la **Variété** comme unité pivot entre la production (Récolte) et le marché (Vente/Perte).
+
+```mermaid
+erDiagram
+    PRODUIT ||--o{ VARIETE : "possède"
+    VARIETE ||--o{ RECOLTE : "est récoltée"
+    VARIETE ||--o{ VENTE : "est vendue"
+    VARIETE ||--o{ PERTE : "est perdue"
+
+    PRODUIT {
+        int id_produit
+        string nom_produit
+    }
+    VARIETE {
+        int id_variete
+        string nom_variete
+        string description
+        float stock_actuel
+    }
+    RECOLTE {
+        int id_recolte
+        date date_recolte
+        float qte_kg
+    }
+    VENTE {
+        int id_vente
+        date date_vente
+        float qte_kg
+        float prix_unitaire
+    }
+```
+
+### Niveau Logique (MLD)
+*   **PRODUIT** (<u>id_produit</u>, nom_produit)
+*   **VARIETE** (<u>id_variete</u>, nom_variete, description, *id_produit*, stock_actuel)
+*   **RECOLTE** (<u>id_recolte</u>, date_recolte, qte_kg, *id_variete*)
+*   **VENTE** (<u>id_vente</u>, date_vente, qte_kg, prix_unitaire, *id_variete*)
+*   **PERTE** (<u>id_perte</u>, date_perte, qte_kg, motif, *id_variete*)
+
+### Niveau Physique (MPD - Oracle DB)
+L'implémentation repose sur :
+*   **Triggers PL/SQL** : Automatisation de la mise à jour du `STOCK_ACTUEL` dans la table `VARIETE` lors de chaque opération (INSERT/UPDATE/DELETE sur Recolte, Vente ou Perte).
+*   **Vues SQL complexes** : Centralisation des calculs de rendement et de CA pour garantir la performance du dashboard.
+*   **Oracle Machine Learning** : Utilisation de modèles de régression pour prédire les ruptures de stock.
+
+---
+
+## 2. Critique du Projet
+
+> [!IMPORTANT]
+> **Points Forts (Ce qui va impressionner le jury) :**
+> - **Intégrité des données** : Grâce aux triggers, le stock n'est jamais incohérent.
+> - **Analyse Prédictive** : L'intégration de l'IA (Scatter Chart) pour anticiper les besoins.
+> - **Import Massive (CSV)** : Capacité à traiter des données à grande échelle (Productivité).
+> - **Filtres Temporels** : Analyse granulaire des performances (Mois, Trimestre, Année).
+> - **Reporting** : Génération de rapports PDF stratégiques en un clic.
+
+**Améliorations suggérées :**
+- **Multi-utilisateurs** : Actuellement monoposte, on pourrait ajouter une gestion de rôles (Administrateur vs Ouvrier agricole).
+- **Photos des produits** : Ajouter un champ pour l'image de la variété dans le catalogue.
+
+---
+
+## 3. Session de Questions - Préparation à la Soutenance
+
+Voici les questions types que votre professeur pourrait poser, ainsi que les réponses suggérées.
+
+### Q1 : "Pourquoi avoir stocké le `STOCK_ACTUEL` dans la table `VARIETE` plutôt que de le calculer à la volée ?"
+**Réponse :** "C'est un choix d'optimisation. Calculer le stock en sommant des milliers de lignes de récolte et de vente à chaque affichage ralentirait l'application. En le stockant, nous avons une lecture instantanée. La cohérence est garantie par nos **Triggers PL/SQL** qui interceptent toute modification."
+
+### Q2 : "Comment gérez-vous la volatilité du prix au kilo mentionnée dans l'énoncé ?"
+**Réponse :** "Le prix est saisi au moment de chaque transaction de vente dans la table `VENTE`. Cela permet de garder un historique réel des fluctuations du marché et de calculer le rendement financier exact, même si le prix change d'un jour à l'autre."
+
+### Q3 : "Que se passe-t-il si un utilisateur tente de vendre plus de stock qu'il n'en possède ?"
+**Réponse :** "Nous avons implémenté une contrainte au niveau du trigger Oracle. Si la quantité vendue excède le stock disponible, le trigger lève une exception (`RAISE_APPLICATION_ERROR`), empêchant la validation de la transaction dans la base de données."
+
+### Q4 : "À quoi servent vos vues SQL, n'est-ce pas redondant avec le code Javascript ?"
+**Réponse :** "Au contraire, cela délègue la logique de calcul lourde (agrégations, calculs de rendements annuels) au moteur Oracle, qui est bien plus performant que le client pour traiter des données massives. L'API React se contente ainsi de consommer des résultats 'prêts à l'affichage'."
+
+### Q5 : "Quel est le rôle de la 'Matrice des Risques' dans le dashboard ?"
+**Réponse :** "C'est un outil d'aide à la décision. Elle combine la vitesse de vente et le niveau de stock actuel pour classer les variétés. Celles en zone rouge demandent une récolte immédiate ou un réapprovisionnement, tandis que celles en zone verte sont stables."
+
+---
+
+> [!TIP]
+> Pour votre démonstration, commencez par montrer le catalogue, faites une récolte, puis une vente, et montrez comment les KPIs du dashboard ont bougé instantanément. Cela prouve que le système 'vie' en temps réel.

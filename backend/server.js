@@ -163,15 +163,18 @@ app.post('/api/import/varietes', upload.single('file'), async (req, res) => {
     let successCount = 0;
 
     for (const row of results) {
-      // Les headers sont maintenant uniformisés en majuscules (ex: NOM_PRODUIT)
+      // Les headers sont uniformisés en majuscules
       const nomP = row.NOM_PRODUIT || row.PRODUIT;
       const nomV = row.NOM_VARIETE || row.VARIETE;
       const desc = row.DESCRIPTION || '';
-      const stock = parseFloat(row.STOCK_INITIAL_KG || row.STOCK || 0);
+      const stockInit = parseFloat(row.STOCK_INITIAL_KG || row.STOCK || 0);
+      const dateRec = row.DATE_RECOLTE || row.DATE;
+      const qteRec = parseFloat(row.QTE_RECOLTE || row.RECOLTE || 0);
 
       if (!nomP || !nomV) continue;
 
       try {
+        // 1. Gérer le Produit
         let prodResult = await connection.execute(`SELECT id_produit FROM PRODUIT WHERE UPPER(nom_produit) = UPPER(:1)`, [nomP.trim()]);
         let productId;
         if (prodResult.rows.length === 0) {
@@ -180,7 +183,19 @@ app.post('/api/import/varietes', upload.single('file'), async (req, res) => {
         } else {
           productId = prodResult.rows[0].ID_PRODUIT;
         }
-        await connection.execute(`INSERT INTO VARIETE (nom_variete, description, id_produit, stock_actuel_kg) VALUES (:1, :2, :3, :4)`, [nomV.trim(), desc.trim(), productId, stock]);
+
+        // 2. Gérer la Variété
+        // On initialise le stock via STOCK_INITIAL_KG et on ajoute l'historique via RECOLTE.
+        const insertVar = await connection.execute(`INSERT INTO VARIETE (nom_variete, description, id_produit, stock_actuel_kg) VALUES (:1, :2, :3, :4) RETURNING id_variete INTO :id`,
+          { 1: nomV.trim(), 2: desc.trim(), 3: productId, 4: stockInit, id: { dir: oracledb.BIND_OUT, type: oracledb.NUMBER } });
+        const newVarieteId = insertVar.outBinds.id[0];
+
+        // 3. Gérer l'Historique de Récolte si fourni
+        if (dateRec && dateRec.trim() && qteRec > 0) {
+          await connection.execute(`INSERT INTO RECOLTE (id_variete, qte_kg, date_rec) VALUES (:1, :2, TO_DATE(:3, 'YYYY-MM-DD'))`, [newVarieteId, qteRec, dateRec.trim()]);
+          // Le trigger MVT_RECOLTE mettra à jour le stock automatiquement ajouter à stock_actuel_kg
+        }
+
         successCount++;
       } catch (err) {
         errors.push({ row, error: err.message });
@@ -233,10 +248,10 @@ app.get('/api/dashboard/activite', async (req, res) => {
   let sql = `SELECT * FROM V_ACTIVITE_JOUR`, params = [];
   if (period) {
     let days = period === 'quarter' ? 90 : (period === 'year' ? 365 : 30);
-    sql += ` WHERE JOUR >= TRUNC(SYSDATE) - :d`;
+    sql += ` WHERE D_JOUR >= TRUNC(SYSDATE) - :d`;
     params.push(days);
   }
-  sql += ` ORDER BY JOUR ASC`;
+  sql += ` ORDER BY D_JOUR ASC`;
   const result = await executeSQL(sql, params, res);
   if (result) res.json(result.rows);
 });
@@ -246,10 +261,10 @@ app.get('/api/dashboard/evolution', async (req, res) => {
   let sql = `SELECT * FROM EVOLUTION_VENTES`, params = [];
   if (period) {
     let days = period === 'quarter' ? 90 : (period === 'year' ? 365 : 30);
-    sql += ` WHERE JOUR >= TRUNC(SYSDATE) - :d`;
+    sql += ` WHERE D_JOUR >= TRUNC(SYSDATE) - :d`;
     params.push(days);
   }
-  sql += ` ORDER BY JOUR ASC`;
+  sql += ` ORDER BY D_JOUR ASC`;
   const result = await executeSQL(sql, params, res);
   if (result) res.json(result.rows);
 });
