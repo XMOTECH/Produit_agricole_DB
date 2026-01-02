@@ -34,7 +34,7 @@ const PredictionScatterChart = ({ data }) => {
     return (
         <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '12px', boxShadow: '0 2px 4px rgba(0,0,0,0.05)', height: '400px' }}>
             <h3 style={{ marginBottom: '10px', color: '#1e293b', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Brain size={20} color="#0f172a" /> Matrice des Risques ()
+                <Brain size={20} color="#0f172a" /> Matrice des Risques
             </h3>
             <p style={{ fontSize: '0.9rem', color: '#64748b', marginBottom: '20px' }}>
                 Positionnement des variétés selon l'urgence de rupture (Axe X) et la vitesse de vente (Axe Y).
