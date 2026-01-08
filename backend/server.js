@@ -12,7 +12,13 @@ const app = express();
 const PORT = 3000;
 
 // --- MIDDLEWARES ---
-app.use(cors());
+// Configuration CORS pour permettre les requêtes depuis le frontend
+app.use(cors({
+  origin: 'http://localhost:3001', // Autoriser le frontend
+  credentials: true, // Autoriser les cookies/credentials
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 
 // --- CONFIGURATION ORACLE ---
@@ -302,6 +308,26 @@ app.get('/api/dashboard/top-varietes', async (req, res) => {
     ${where}
     GROUP BY v.nom_variete
     ORDER BY total_ca DESC 
+    FETCH FIRST 5 ROWS ONLY
+  `;
+  const result = await executeSQL(sql, params, res);
+  if (result) res.json(result.rows);
+});
+
+app.get('/api/dashboard/top-pertes', async (req, res) => {
+  const { period } = req.query;
+  let where = "", params = {};
+  if (period) {
+    where = ` WHERE p.date_perte >= TRUNC(SYSDATE) - :d`;
+    params.d = period === 'quarter' ? 90 : (period === 'year' ? 365 : 30);
+  }
+  const sql = `
+    SELECT v.nom_variete, NVL(SUM(p.qte_kg), 0) as total_perte
+    FROM VARIETE v
+    LEFT JOIN PERTE p ON v.id_variete = p.id_variete
+    ${where}
+    GROUP BY v.nom_variete
+    ORDER BY total_perte DESC 
     FETCH FIRST 5 ROWS ONLY
   `;
   const result = await executeSQL(sql, params, res);

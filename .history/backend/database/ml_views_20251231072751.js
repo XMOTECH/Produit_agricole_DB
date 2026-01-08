@@ -16,11 +16,11 @@ const ML_QUERIES = [
                   REGR_R2(s.qte_kg, TO_NUMBER(TO_CHAR(s.date_vente, 'J'))) as reliability,
                   -- Interprétation Humaine
                   CASE 
-                      WHEN REGR_SLOPE(s.qte_kg, TO_NUMBER(TO_CHAR(s.date_vente, 'J'))) > 0.5 THEN 'Croissance Forte '
-                      WHEN REGR_SLOPE(s.qte_kg, TO_NUMBER(TO_CHAR(s.date_vente, 'J'))) > 0 THEN 'Légère Hausse '
-                      WHEN REGR_SLOPE(s.qte_kg, TO_NUMBER(TO_CHAR(s.date_vente, 'J'))) < -0.5 THEN 'Déclin Rapide '
-                      WHEN REGR_SLOPE(s.qte_kg, TO_NUMBER(TO_CHAR(s.date_vente, 'J'))) < 0 THEN 'Légère Baisse '
-                      ELSE 'Stable ' 
+                      WHEN REGR_SLOPE(s.qte_kg, TO_NUMBER(TO_CHAR(s.date_vente, 'J'))) > 0.5 THEN 'Croissance Forte 🚀'
+                      WHEN REGR_SLOPE(s.qte_kg, TO_NUMBER(TO_CHAR(s.date_vente, 'J'))) > 0 THEN 'Légère Hausse ↗️'
+                      WHEN REGR_SLOPE(s.qte_kg, TO_NUMBER(TO_CHAR(s.date_vente, 'J'))) < -0.5 THEN 'Déclin Rapide 📉'
+                      WHEN REGR_SLOPE(s.qte_kg, TO_NUMBER(TO_CHAR(s.date_vente, 'J'))) < 0 THEN 'Légère Baisse ↘️'
+                      ELSE 'Stable ➡️' 
                   END as tendance_txt
               FROM VARIETE v
               JOIN VENTE s ON v.id_variete = s.id_variete

@@ -32,7 +32,7 @@ const Sidebar = () => {
                 <div style={{ width: '35px', height: '35px', backgroundColor: '#16a34a', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <Sprout color="white" size={20} />
                 </div>
-                <h2 style={{ fontSize: '1.2rem', fontWeight: 'bold', margin: 0 }}>Méñenté Capital</h2>
+                <h2 style={{ fontSize: '1.2rem', fontWeight: 'bold', margin: 0 }}>Agri-Ges</h2>
             </div>
 
             {/* Menu */}
