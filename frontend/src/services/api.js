@@ -21,6 +21,7 @@ export const getRendementData = (searchTerm = '', period = '') =>
 
 export const getRepartitionProduit = (period = '') => api.get(`/dashboard/repartition-produit?period=${period}`);
 export const getTopVarietes = (period = '') => api.get(`/dashboard/top-varietes?period=${period}`);
+export const getTopPertes = (period = '') => api.get(`/dashboard/top-pertes?period=${period}`);
 
 // --- IMPORT ---
 export const importVarietes = (file) => {

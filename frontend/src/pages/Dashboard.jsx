@@ -6,6 +6,7 @@ import {
     getRendementData,
     getRepartitionProduit,
     getTopVarietes,
+    getTopPertes,
     getActivityData,
     getPredictions
 } from '../services/api';
@@ -16,6 +17,7 @@ import EvolutionChart from '../components/charts/EvolutionChart';
 import PredictionScatterChart from '../components/charts/PredictionScatterChart';
 import RevenuePieChart from '../components/charts/RevenuePieChart';
 import TopVarietiesChart from '../components/charts/TopVarietiesChart';
+import TopLossesChart from '../components/charts/TopLossesChart';
 import InventoryTable from '../components/tables/InventoryTable';
 import { generateReport } from '../utils/ReportGenerator';
 
@@ -26,6 +28,7 @@ const Dashboard = () => {
     const [evolutionData, setEvolutionData] = useState([]);
     const [repartitionData, setRepartitionData] = useState([]);
     const [topVarietesData, setTopVarietesData] = useState([]);
+    const [topPertesData, setTopPertesData] = useState([]);
     const [tableData, setTableData] = useState([]);
     const [predictions, setPredictions] = useState([]);
     const [period, setPeriod] = useState(''); // '', 'month', 'quarter', 'year'
@@ -39,12 +42,13 @@ const Dashboard = () => {
     const loadDashboardData = async (currentPeriod) => {
         try {
             // Chargement parallèle pour optimiser la performance
-            const [statsRes, actRes, evoRes, pieRes, barRes, tableRes, predRes] = await Promise.all([
+            const [statsRes, actRes, evoRes, pieRes, barRes, pertesRes, tableRes, predRes] = await Promise.all([
                 getGlobalStats(currentPeriod),
                 getActivityData(currentPeriod),
                 getEvolutionData(currentPeriod),
                 getRepartitionProduit(currentPeriod),
                 getTopVarietes(currentPeriod),
+                getTopPertes(currentPeriod),
                 getRendementData('', currentPeriod),
                 getPredictions() // Les prédictions restent globales car liées au stock actuel
             ]);
@@ -54,6 +58,7 @@ const Dashboard = () => {
             setEvolutionData(evoRes.data);
             setRepartitionData(pieRes.data);
             setTopVarietesData(barRes.data);
+            setTopPertesData(pertesRes.data);
             setTableData(tableRes.data);
             setPredictions(predRes.data);
         } catch (error) {
@@ -137,6 +142,11 @@ const Dashboard = () => {
                 {/* Classement Top 5 (Barres) */}
                 <div style={styles.subChart}>
                     <TopVarietiesChart data={topVarietesData} />
+                </div>
+
+                {/* Classement Top 5 Pertes (Barres) - NOUVEAU */}
+                <div style={styles.subChart}>
+                    <TopLossesChart data={topPertesData} />
                 </div>
             </div>
 
