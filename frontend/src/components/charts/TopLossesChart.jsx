@@ -5,8 +5,8 @@ const TopLossesChart = ({ data }) => {
     return (
         <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '12px', boxShadow: '0 2px 4px rgba(0,0,0,0.05)', height: '400px', display: 'flex', flexDirection: 'column' }}>
             <h3 style={{ marginBottom: '20px', color: '#1e293b', fontSize: '1.1rem' }}>Top 5 Variétés - Pertes (Kg)</h3>
-            <div style={{ flex: 1 }}>
-                <ResponsiveContainer width="100%" height="100%">
+            <div style={{ flex: 1, minHeight: '300px' }}>
+                <ResponsiveContainer width="100%" height="100%" minHeight={300}>
                     <BarChart data={data} layout="vertical" margin={{ top: 5, right: 30, left: 40, bottom: 5 }}>
                         <CartesianGrid strokeDasharray="3 3" horizontal={false} />
                         <XAxis type="number" hide />

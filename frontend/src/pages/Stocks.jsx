@@ -8,6 +8,7 @@ const Stocks = () => {
     const [produits, setProduits] = useState([]);
     const [varietes, setVarietes] = useState([]);
     const [message, setMessage] = useState({ type: '', text: '' });
+    const [loading, setLoading] = useState(true);
 
     // --- FORMS STATES ---
     const [newProduit, setNewProduit] = useState('');
@@ -19,13 +20,18 @@ const Stocks = () => {
     }, []);
 
     const refreshData = async () => {
+        setLoading(true);
         try {
-            const p = await getProduits();
-            const v = await getVarietes();
-            setProduits(p.data);
-            setVarietes(v.data);
+            const [p, v] = await Promise.all([
+                getProduits().catch(() => ({ data: [] })),
+                getVarietes().catch(() => ({ data: [] }))
+            ]);
+            setProduits(p.data || []);
+            setVarietes(v.data || []);
         } catch (err) {
-            console.error(err);
+            console.error("Erreur refreshData:", err);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -139,7 +145,7 @@ const Stocks = () => {
                                     <label style={styles.label}>Produit Parent</label>
                                     <select style={styles.input} value={newVariete.id_produit} onChange={e => setNewVariete({ ...newVariete, id_produit: e.target.value })} required>
                                         <option value="">-- Choisir --</option>
-                                        {produits.map(p => <option key={p.ID_PRODUIT} value={p.ID_PRODUIT}>{p.NOM_PRODUIT}</option>)}
+                                        {produits.map(p => <option key={p.ID_PRODUIT || p.id_produit} value={p.ID_PRODUIT || p.id_produit}>{p.NOM_PRODUIT || p.nom_produit}</option>)}
                                     </select>
                                 </div>
                                 <div style={styles.inputGroup}>
@@ -159,8 +165,8 @@ const Stocks = () => {
                             <h4 style={{ margin: '0 0 10px 0', color: '#64748b' }}>Variétés existantes ({varietes.length})</h4>
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
                                 {varietes.slice(0, 8).map(v => (
-                                    <span key={v.ID_VARIETE} style={{ fontSize: '0.8rem', padding: '5px 10px', backgroundColor: '#f1f5f9', borderRadius: '15px', color: '#475569' }}>
-                                        {v.NOM_VARIETE}
+                                    <span key={v.ID_VARIETE || v.id_variete} style={{ fontSize: '0.8rem', padding: '5px 10px', backgroundColor: '#f1f5f9', borderRadius: '15px', color: '#475569' }}>
+                                        {v.NOM_VARIETE || v.nom_variete}
                                     </span>
                                 ))}
                             </div>
@@ -181,8 +187,8 @@ const Stocks = () => {
                                 <select style={styles.input} value={newPerte.id_variete} onChange={e => setNewPerte({ ...newPerte, id_variete: e.target.value })} required>
                                     <option value="">-- Choisir la variété --</option>
                                     {varietes.map(v => (
-                                        <option key={v.ID_VARIETE} value={v.ID_VARIETE}>
-                                            {v.NOM_VARIETE} (Dispo: {v.STOCK_ACTUEL_KG} kg)
+                                        <option key={v.ID_VARIETE || v.id_variete} value={v.ID_VARIETE || v.id_variete}>
+                                            {v.NOM_VARIETE || v.nom_variete} (Dispo: {v.STOCK_ACTUEL_KG || v.stock_actuel_kg} kg)
                                         </option>
                                     ))}
                                 </select>

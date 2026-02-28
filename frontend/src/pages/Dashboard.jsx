@@ -40,29 +40,29 @@ const Dashboard = () => {
     }, [period]);
 
     const loadDashboardData = async (currentPeriod) => {
+        setLoading(true);
         try {
-            // Chargement parallèle pour optimiser la performance
             const [statsRes, actRes, evoRes, pieRes, barRes, pertesRes, tableRes, predRes] = await Promise.all([
-                getGlobalStats(currentPeriod),
-                getActivityData(currentPeriod),
-                getEvolutionData(currentPeriod),
-                getRepartitionProduit(currentPeriod),
-                getTopVarietes(currentPeriod),
-                getTopPertes(currentPeriod),
-                getRendementData('', currentPeriod),
-                getPredictions() // Les prédictions restent globales car liées au stock actuel
+                getGlobalStats(currentPeriod).catch(() => ({ data: null })),
+                getActivityData(currentPeriod).catch(() => ({ data: [] })),
+                getEvolutionData(currentPeriod).catch(() => ({ data: [] })),
+                getRepartitionProduit(currentPeriod).catch(() => ({ data: [] })),
+                getTopVarietes(currentPeriod).catch(() => ({ data: [] })),
+                getTopPertes(currentPeriod).catch(() => ({ data: [] })),
+                getRendementData('', currentPeriod).catch(() => ({ data: [] })),
+                getPredictions().catch(() => ({ data: [] }))
             ]);
 
             setGlobalStats(statsRes.data);
-            setActivityData(actRes.data);
-            setEvolutionData(evoRes.data);
-            setRepartitionData(pieRes.data);
-            setTopVarietesData(barRes.data);
-            setTopPertesData(pertesRes.data);
-            setTableData(tableRes.data);
-            setPredictions(predRes.data);
+            setActivityData(actRes.data || []);
+            setEvolutionData(evoRes.data || []);
+            setRepartitionData(pieRes.data || []);
+            setTopVarietesData(barRes.data || []);
+            setTopPertesData(pertesRes.data || []);
+            setTableData(tableRes.data || []);
+            setPredictions(predRes.data || []);
         } catch (error) {
-            console.error("Erreur chargement dashboard:", error);
+            console.error("Erreur critique chargement dashboard:", error);
         } finally {
             setLoading(false);
         }

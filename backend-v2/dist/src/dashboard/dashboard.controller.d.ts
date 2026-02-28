@@ -3,11 +3,11 @@ export declare class DashboardController {
     private readonly dashboardService;
     constructor(dashboardService: DashboardService);
     getStatsGlobales(period?: string): Promise<{
-        total_recolte: number;
-        total_vente_fcfa: number;
-        total_perte_kg: number;
-        taux_ecoulement: number;
-        valeur_stock_estimee: number;
+        TOTAL_RECOLTE: number;
+        TOTAL_VENTE_FCFA: number;
+        TOTAL_PERTE_KG: number;
+        TAUX_ECOULEMENT: number;
+        VALEUR_STOCK_ESTIMEE: number;
     }>;
     getEvolution(period?: string): Promise<any[]>;
     getRepartitionProduit(period?: string): Promise<any[]>;
@@ -16,10 +16,6 @@ export declare class DashboardController {
     getRendement(period?: string, search?: string): Promise<any[]>;
     getActivite(period?: string): Promise<any>;
     getAlertes(): Promise<import("../varietes/entities/variete.entity").Variete[]>;
-    getPredictions(): Promise<{
-        label: string;
-        value: string;
-        date: string;
-    }[]>;
+    getPredictions(): Promise<any>;
     getTrends(): Promise<any[]>;
 }

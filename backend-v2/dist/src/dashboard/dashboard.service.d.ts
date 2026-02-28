@@ -14,11 +14,11 @@ export declare class DashboardService {
     constructor(dataSource: DataSource, produitRepo: Repository<Produit>, varieteRepo: Repository<Variete>, recolteRepo: Repository<Recolte>, venteRepo: Repository<Vente>, perteRepo: Repository<Perte>);
     private applyPeriodFilter;
     getStatsGlobales(period?: string): Promise<{
-        total_recolte: number;
-        total_vente_fcfa: number;
-        total_perte_kg: number;
-        taux_ecoulement: number;
-        valeur_stock_estimee: number;
+        TOTAL_RECOLTE: number;
+        TOTAL_VENTE_FCFA: number;
+        TOTAL_PERTE_KG: number;
+        TAUX_ECOULEMENT: number;
+        VALEUR_STOCK_ESTIMEE: number;
     }>;
     getEvolution(period?: string): Promise<any[]>;
     getRepartitionProduit(period?: string): Promise<any[]>;
@@ -27,10 +27,6 @@ export declare class DashboardService {
     getRendement(period?: string, search?: string): Promise<any[]>;
     getActivite(period?: string): Promise<any>;
     getAlertesStock(): Promise<Variete[]>;
-    getPredictions(): Promise<{
-        label: string;
-        value: string;
-        date: string;
-    }[]>;
+    getPredictions(): Promise<any>;
     getTrends(): Promise<any[]>;
 }

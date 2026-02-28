@@ -40,8 +40,8 @@ const PredictionScatterChart = ({ data }) => {
                 Positionnement des variétés selon l'urgence de rupture (Axe X) et la vitesse de vente (Axe Y).
             </p>
 
-            <div style={{ width: '100%', height: 300 }}>
-                <ResponsiveContainer>
+            <div style={{ width: '100%', height: 300, minHeight: '300px' }}>
+                <ResponsiveContainer width="100%" height="100%" minHeight={300}>
                     <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 0 }}>
                         <CartesianGrid strokeDasharray="3 3" />
 

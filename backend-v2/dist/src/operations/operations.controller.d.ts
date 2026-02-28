@@ -17,6 +17,6 @@ export declare class OperationsController {
         success: boolean;
         message: string;
     }>;
-    getHistoriqueVentes(): Promise<import("./entities/vente.entity").Vente[]>;
-    getHistoriqueRecoltes(): Promise<import("./entities/recolte.entity").Recolte[]>;
+    getHistoriqueVentes(): Promise<any[]>;
+    getHistoriqueRecoltes(): Promise<any[]>;
 }

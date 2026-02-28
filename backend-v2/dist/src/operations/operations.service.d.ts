@@ -23,6 +23,6 @@ export declare class OperationsService {
         success: boolean;
         message: string;
     }>;
-    getHistoriqueVentes(): Promise<Vente[]>;
-    getHistoriqueRecoltes(): Promise<Recolte[]>;
+    getHistoriqueVentes(): Promise<any[]>;
+    getHistoriqueRecoltes(): Promise<any[]>;
 }

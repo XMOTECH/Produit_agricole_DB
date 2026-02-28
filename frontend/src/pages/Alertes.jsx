@@ -99,12 +99,12 @@ const Alertes = () => {
                             <div key={`pred-${idx}`} style={{ ...styles.card({ border: '#7c3aed' }), borderLeft: '5px solid #7c3aed' }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                     <span style={{ backgroundColor: '#f5f3ff', color: '#7c3aed', padding: '4px 10px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 'bold' }}>
-                                        : {pred.NIVEAU_URGENCE}
+                                        : {pred.NIVEAU_URGENCE || pred.niveau_urgence}
                                     </span>
                                 </div>
-                                <h3 style={styles.prodName}>{pred.NOM_VARIETE}</h3>
-                                <div style={styles.stockBig}>{pred.JOURS_RESTANTS} <span style={{ fontSize: '1rem', color: '#64748b' }}>jours restants</span></div>
-                                <p style={{ color: '#64748b', fontSize: '0.9rem' }}>Basé sur une moyenne de <strong>{pred.VENTE_MOYENNE_JOUR} kg/jour</strong>.</p>
+                                <h3 style={styles.prodName}>{pred.NOM_VARIETE || pred.nom_variete}</h3>
+                                <div style={styles.stockBig}>{pred.JOURS_RESTANTS || pred.jours_restants} <span style={{ fontSize: '1rem', color: '#64748b' }}>jours restants</span></div>
+                                <p style={{ color: '#64748b', fontSize: '0.9rem' }}>Basé sur une moyenne de <strong>{pred.VENTE_MOYENNE_JOUR || pred.vente_moyenne_jour} kg/jour</strong>.</p>
                             </div>
                         ))}
                     </div>
@@ -115,18 +115,18 @@ const Alertes = () => {
             <h3 style={styles.sectionTitle}><AlertTriangle size={20} color="#f59e0b" /> Alertes Stock Réel</h3>
             {alertes.length > 0 ? (
                 <div style={styles.grid}>
-                    {alertes.map((item) => {
-                        const params = getSeverityParams(item.STOCK_ACTUEL_KG);
+                    {alertes.map((item, index) => {
+                        const params = getSeverityParams(item.STOCK_ACTUEL_KG || item.stock_actuel_kg);
                         return (
-                            <div key={`alert-${item.ID_VARIETE}`} style={styles.card(params)}>
+                            <div key={`alert-${item.ID_VARIETE || item.id_variete || index}`} style={styles.card(params)}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
                                     <span style={styles.badge(params)}>{params.text}</span>
                                     <ShieldAlert size={20} color={params.border} />
                                 </div>
 
-                                <h3 style={styles.prodName}>{item.NOM_VARIETE}</h3>
+                                <h3 style={styles.prodName}>{item.NOM_VARIETE || item.nom_variete}</h3>
                                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '5px' }}>
-                                    <span style={styles.stockBig}>{item.STOCK_ACTUEL_KG}</span>
+                                    <span style={styles.stockBig}>{item.STOCK_ACTUEL_KG || item.stock_actuel_kg || 0}</span>
                                     <span style={{ color: '#64748b' }}>kg restants</span>
                                 </div>
 

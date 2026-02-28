@@ -7,8 +7,8 @@ const RevenuePieChart = ({ data }) => {
     return (
         <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '12px', boxShadow: '0 2px 4px rgba(0,0,0,0.05)', height: '400px', display: 'flex', flexDirection: 'column' }}>
             <h3 style={{ marginBottom: '20px', color: '#1e293b', fontSize: '1.1rem' }}>Revenue Distribution by Product</h3>
-            <div style={{ flex: 1 }}>
-                <ResponsiveContainer width="100%" height="100%">
+            <div style={{ flex: 1, minHeight: '300px' }}>
+                <ResponsiveContainer width="100%" height="100%" minHeight={300}>
                     <PieChart>
                         <Pie
                             data={data}

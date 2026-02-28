@@ -178,8 +178,8 @@ const Operations = () => {
                             >
                                 <option value="">-- Choisir une variété --</option>
                                 {varietes.map((v) => (
-                                    <option key={v.ID_VARIETE} value={v.ID_VARIETE}>
-                                        {v.NOM_VARIETE} (Stock: {v.STOCK_ACTUEL_KG} kg)
+                                    <option key={v.ID_VARIETE || v.id_variete} value={v.ID_VARIETE || v.id_variete}>
+                                        {v.NOM_VARIETE || v.nom_variete} (Stock: {v.STOCK_ACTUEL_KG || v.stock_actuel_kg} kg)
                                     </option>
                                 ))}
                             </select>
@@ -253,22 +253,22 @@ const Operations = () => {
                         <tbody>
                             {history.length > 0 ? (
                                 history.map((row, index) => (
-                                    <tr key={index}>
-                                        <td style={styles.td}>{row.DATE_FMT}</td>
-                                        <td style={{ ...styles.td, fontWeight: '600' }}>{row.NOM_VARIETE}</td>
-                                        <td style={styles.td}>{row.NOM_PRODUIT}</td>
+                                    <tr key={row.ID_RECOLTE || row.id_recolte || row.ID_VENTE || row.id_vente || `history-${index}`}>
+                                        <td style={styles.td}>{row.DATE_FMT || row.date_fmt}</td>
+                                        <td style={{ ...styles.td, fontWeight: '600' }}>{row.NOM_VARIETE || row.nom_variete}</td>
+                                        <td style={styles.td}>{row.NOM_PRODUIT || row.nom_produit}</td>
                                         <td style={styles.td}>
                                             <span style={{
                                                 backgroundColor: activeTab === 'recolte' ? '#dcfce7' : '#e0f2fe',
                                                 color: activeTab === 'recolte' ? '#166534' : '#0369a1',
                                                 padding: '4px 8px', borderRadius: '4px', fontWeight: 'bold'
                                             }}>
-                                                {activeTab === 'recolte' ? '+' : '-'}{row.QTE_KG} kg
+                                                {activeTab === 'recolte' ? '+' : '-'}{row.QTE_KG || row.qte_kg} kg
                                             </span>
                                         </td>
                                         {activeTab === 'vente' && (
                                             <td style={{ ...styles.td, fontWeight: 'bold', color: '#16a34a' }}>
-                                                {row.TOTAL_VENTE?.toLocaleString()} FCFA
+                                                {(row.TOTAL_VENTE || row.total_vente)?.toLocaleString()} FCFA
                                             </td>
                                         )}
                                     </tr>

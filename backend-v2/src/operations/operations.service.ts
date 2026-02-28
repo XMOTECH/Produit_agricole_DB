@@ -110,16 +110,29 @@ export class OperationsService {
   }
 
   async getHistoriqueVentes() {
-    return await this.ventesRepository.find({
-      relations: ['variete', 'variete.produit'],
-      order: { date_vente: 'DESC' }
-    });
+    return await this.ventesRepository.createQueryBuilder('v')
+      .innerJoin('v.variete', 'var')
+      .innerJoin('var.produit', 'p')
+      .select('v.id_vente', 'ID_VENTE')
+      .addSelect("TO_CHAR(v.date_vente, 'DD/MM/YYYY HH24:MI')", 'DATE_FMT')
+      .addSelect('var.nom_variete', 'NOM_VARIETE')
+      .addSelect('p.nom_produit', 'NOM_PRODUIT')
+      .addSelect('v.qte_kg::numeric', 'QTE_KG')
+      .addSelect('(v.qte_kg * v.prix_unitaire)::numeric', 'TOTAL_VENTE')
+      .orderBy('v.date_vente', 'DESC')
+      .getRawMany();
   }
 
   async getHistoriqueRecoltes() {
-    return await this.recoltesRepository.find({
-      relations: ['variete', 'variete.produit'],
-      order: { date_rec: 'DESC' }
-    });
+    return await this.recoltesRepository.createQueryBuilder('r')
+      .innerJoin('r.variete', 'var')
+      .innerJoin('var.produit', 'p')
+      .select('r.id_recolte', 'ID_RECOLTE')
+      .addSelect("TO_CHAR(r.date_rec, 'DD/MM/YYYY HH24:MI')", 'DATE_FMT')
+      .addSelect('var.nom_variete', 'NOM_VARIETE')
+      .addSelect('p.nom_produit', 'NOM_PRODUIT')
+      .addSelect('r.qte_kg::numeric', 'QTE_KG')
+      .orderBy('r.date_rec', 'DESC')
+      .getRawMany();
   }
 }
