@@ -15,6 +15,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DataImportController = void 0;
 const common_1 = require("@nestjs/common");
 const platform_express_1 = require("@nestjs/platform-express");
+const passport_1 = require("@nestjs/passport");
+const roles_guard_1 = require("../auth/guards/roles.guard");
+const roles_decorator_1 = require("../auth/decorators/roles.decorator");
+const user_entity_1 = require("../users/entities/user.entity");
 const data_import_service_1 = require("./data-import.service");
 const swagger_1 = require("@nestjs/swagger");
 let DataImportController = class DataImportController {
@@ -31,6 +35,9 @@ let DataImportController = class DataImportController {
 exports.DataImportController = DataImportController;
 __decorate([
     (0, common_1.Post)('varietes'),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt'), roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)(user_entity_1.UserRole.ADMIN),
+    (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Importer des variétés depuis un fichier CSV' }),
     (0, swagger_1.ApiConsumes)('multipart/form-data'),
     (0, swagger_1.ApiBody)({

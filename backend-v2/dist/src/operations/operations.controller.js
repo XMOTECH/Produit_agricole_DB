@@ -14,6 +14,10 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OperationsController = void 0;
 const common_1 = require("@nestjs/common");
+const passport_1 = require("@nestjs/passport");
+const roles_guard_1 = require("../auth/guards/roles.guard");
+const roles_decorator_1 = require("../auth/decorators/roles.decorator");
+const user_entity_1 = require("../users/entities/user.entity");
 const operations_service_1 = require("./operations.service");
 const create_recolte_dto_1 = require("./dto/create-recolte.dto");
 const create_vente_dto_1 = require("./dto/create-vente.dto");
@@ -42,6 +46,9 @@ let OperationsController = class OperationsController {
 exports.OperationsController = OperationsController;
 __decorate([
     (0, common_1.Post)('recoltes'),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt'), roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)(user_entity_1.UserRole.ADMIN, user_entity_1.UserRole.SELLER),
+    (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Enregistrer une nouvelle récolte' }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -50,6 +57,9 @@ __decorate([
 ], OperationsController.prototype, "createRecolte", null);
 __decorate([
     (0, common_1.Post)('ventes'),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt'), roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)(user_entity_1.UserRole.ADMIN, user_entity_1.UserRole.SELLER),
+    (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Enregistrer une nouvelle vente' }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -58,6 +68,9 @@ __decorate([
 ], OperationsController.prototype, "createVente", null);
 __decorate([
     (0, common_1.Post)('pertes'),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt'), roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)(user_entity_1.UserRole.ADMIN, user_entity_1.UserRole.SELLER),
+    (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Enregistrer une perte' }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),

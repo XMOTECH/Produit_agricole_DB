@@ -17,6 +17,8 @@ const varietes_module_1 = require("./varietes/varietes.module");
 const operations_module_1 = require("./operations/operations.module");
 const dashboard_module_1 = require("./dashboard/dashboard.module");
 const data_import_module_1 = require("./data-import/data-import.module");
+const auth_module_1 = require("./auth/auth.module");
+const users_module_1 = require("./users/users.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -47,7 +49,7 @@ exports.AppModule = AppModule = __decorate([
             varietes_module_1.VarietesModule,
             operations_module_1.OperationsModule,
             dashboard_module_1.DashboardModule,
-            data_import_module_1.DataImportModule
+            data_import_module_1.DataImportModule, auth_module_1.AuthModule, users_module_1.UsersModule
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

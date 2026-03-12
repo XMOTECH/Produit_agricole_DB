@@ -8,6 +8,8 @@ import { VarietesModule } from './varietes/varietes.module';
 import { OperationsModule } from './operations/operations.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { DataImportModule } from './data-import/data-import.module';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -35,7 +37,7 @@ import { DataImportModule } from './data-import/data-import.module';
     VarietesModule, 
     OperationsModule, 
     DashboardModule, 
-    DataImportModule
+    DataImportModule, AuthModule, UsersModule
   ],
   controllers: [AppController],
   providers: [AppService],
